@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=" UTF-8">
+        <meta name =" viewport" content=" width = device-width , initial-scale =1" />
+        <title>Vòng quay may mắn</title>
+        <link rel ="stylesheet" href = "./style.css">
+        <link rel ="icon" type ="image/png" sizes="16x16"href="./fortune-wheel.png" alt ="logo"></link>
+        
+    </head>
+    <body>
+        <div class="container">
+          <div class =" head"></div>
+            <div class="spinBtn">quay</div>
+            <div class="wheel">
+              <div class="number" style="--i:1;--clr:#ff0000"><span style = "--cl:#fff">100%</span></div>
+              <div class="number" style="--i:2;--clr:#fff"><span style = "--cl:#ff0000">1%</span></div>
+              <div class="number" style="--i:3;--clr:#ff0000"><span style = "--cl:#fff">50%</span></div>
+              <div class="number" style="--i:4;--clr:#fff"><span style = "--cl:#ff0000">0%</span></div>
+              <div class="number" style="--i:5;--clr:#ff0000"><span style = "--cl:#fff">30%</span></div>
+              <div class="number" style="--i:6;--clr:#fff"><span style = "--cl:#ff0000">10%</span></div>
+              <div class="number" style="--i:7;--clr:#ff0000"><span style = "--cl:#fff">5%</span></div>
+              <div class="number" style="--i:8;--clr:#fff"><span style = "--cl:#ff0000">20%</span></div>
+            </div>
+            <div class="info-box">
+              <h2 id = "info"></h2>
+              <form id ="form">
+                <div class="user-box">
+                  <input type="text" id ="name" name="name" required="">
+                  <label>Họ và tên:</label>
+                </div>
+                <div class="user-box">
+                  <input type="text" id="place" name="place" required="">
+                  <label>Địa chỉ: </label>
+                </div>
+                <div class="user-box">
+                  <input type="number" id="phone" pattern="\d+" name="phone" required="">
+                  <label>Số điện thoại: </label>
+                </div>
+                <div class = "Submit">
+                  <input type = "button" value ="Nhận voucher !">
+                </div>
+              </form>
+            </div>
+          </div>
+          
+
+          <script type="module" src ="./script.js"></script>
+       
+    </body>
+
+    
+</html>
+
