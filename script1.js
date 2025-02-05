@@ -4,7 +4,10 @@ import {getDatabase,get, set, ref,onValue } from "https://www.gstatic.com/fireba
 let wheel = document.querySelector('.wheel');
 let spinBtn = document.querySelector('.spinBtn');
 let Submit = document.querySelector('.Submit');
-let num = document.querySelectorAll('.number');
+let span = document.querySelectorAll('.number');
+let audio = document.getElementById('nhac');
+let winner = document.getElementById('winner');
+const num = ["10k", "50k" , "20k", "Dưỡng", "100k", "Bông 120 miếng", "Tê", "500k"];
 let headerInfo = document.getElementById('info');
 let infoBox = document.querySelector('.info-box');
 let header = document.querySelector('.head');
@@ -14,8 +17,8 @@ let phone = document.getElementById('phone');
 let form = document.getElementById('form');
 let currentDegree = 0;
 let count = 0;
-let check = 1;
 let checkData = null;
+
 const firebaseConfig = {
     apiKey: "AIzaSyBv-bF1wwDY1EpzHq4L1E3B4KPEX0px8Ko",
     authDomain: "spinwheel-af038.firebaseapp.com",
@@ -32,12 +35,11 @@ const dbrl = getDatabase(app);
 if (window.innerWidth <= 980) {
     document.body.style.backgroundImage = "url('./phone.png')";
     let i = 0;
-    num.forEach(item => {
+    span.forEach(item => {
         item.style.fontSize = "2.5em";
         item.style.textShadow = "3px 5px 2px rgba(0, 0, 0, 0.15)";
         if (i %2 == 0) item.style.color = "#fff";
         else item.style.color = "#ff0000";
-        // item.style.transform = "rotate(45deg)";
         i ++;
     });
     
@@ -46,22 +48,24 @@ if (window.innerWidth <= 980) {
 }
     if (localStorage.getItem("turn-round") == null)
     {
-        check = 1;
+        localStorage.setItem("turn-round",1);
     }
-    else
+ 
+    if(localStorage.getItem("reopen")==null)
     {
-        check = localStorage.getItem("turn-round");
+        localStorage.setItem("reopen",true);
     }
-    if(check == 0)
+    if(localStorage.getItem("turn-round") == 0 && localStorage.getItem("reopen") == false)
     {
         headerInfo.textContent = "Chúc mừng bạn đã nhận được phong bao lì xì " + localStorage.getItem("lastDis");
         infoBox.style.display ='block';
         spinBtn.style.display = 'none';
+        
     }
-header.textContent = "Bạn có " + check + " lượt quay may mắn !";
+header.textContent = "Bạn có " + localStorage.getItem("turn-round") + " lượt quay may mắn !";
 spinBtn.onclick = async function () {
-    header.textContent = "Bạn có 0 lượt quay may mắn !";
-    if (check == 1)
+    
+    if (localStorage.getItem("turn-round") == 1)
     {
         let spinValue = Math.ceil(Math.random() * 360) + 1800; 
         currentDegree += spinValue;
@@ -70,7 +74,7 @@ spinBtn.onclick = async function () {
             {
                 count =0;
             } 
-        if (Math.round(count) == 7)
+        if (num[Math.round(count)] == "500k")
         {
             count = 0;
             currentDegree -= 45;
@@ -84,21 +88,25 @@ spinBtn.onclick = async function () {
             checkData -=1;
             await set(ref(dbrl,"users/temp"), checkData);
         }
-        if (Math.round(count) == 4 && checkData ==0)
+        if (num[Math.round(count)] == "100k" && checkData ==0)
         {
             count = 5;
             currentDegree -= 45;
         }
-        wheel.style.transition = "transform 5s ease-out"; 
+        header.textContent = "Bạn có 0 lượt quay may mắn !";
+        wheel.style.transition = "transform 3s ease-out"; 
         wheel.style.transform = `rotate(${currentDegree}deg)`;
-        headerInfo.textContent = "Chúc mừng bạn đã nhận được phong bao lì xì " + num[Math.round(count)].textContent;
+        audio.play();
+        headerInfo.textContent = "Chúc mừng bạn đã nhận được phong bao lì xì " + num[Math.round(count)];
         setTimeout(function(){
             infoBox.style.display ='block';
             infoBox.style.animation = 'fadeInOut 1s ease-in-out forwards';
             spinBtn.style.display = 'none';
             localStorage.setItem("turn-round", 0);
-            localStorage.setItem("lastDis", num[Math.round(count)].textContent);
-        },6000);
+            localStorage.setItem("lastDis", num[Math.round(count)]);
+            audio.pause();
+            winner.play();
+        },5000);
     }
     else
     {
@@ -122,19 +130,22 @@ Submit.onclick = async function (event)
         }
             else
             {
+               
                 try {
                         await addDoc(collection(db, "users"), {
                             valueName: name.value,
                             valuePhone: phone.value,
                             valuePlace: place.value,
-                            valueDiscount: num[Math.round(count)].textContent,
+                            valueDiscount: num[Math.round(count)],
                             timestamp: new Date()
                         });
                     } catch (error) {
                         console.error("Error: ", error);
                     }
-                        window.location.href = "https://www.facebook.com/thinh.nguyen.857817";
-                        
+                    infoBox.style.display ='none';
+                    spinBtn.style.display = 'flex';
+                    window.location.href = "https://www.facebook.com/thinh.nguyen.857817";
+                    localStorage.setItem("reopen",false);
             }
     
     }
