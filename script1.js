@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import {getDatabase,get, set, ref,onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+// import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+// import { getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+// import {getDatabase,get, set, ref,onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 let wheel = document.querySelector('.wheel');
 let spinBtn = document.querySelector('.spinBtn');
 let Submit = document.querySelector('.Submit');
@@ -19,19 +19,19 @@ let currentDegree = 0;
 let count = 0;
 let checkData = null;
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBv-bF1wwDY1EpzHq4L1E3B4KPEX0px8Ko",
-    authDomain: "spinwheel-af038.firebaseapp.com",
-    databaseURL: "https://spinwheel-af038-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "spinwheel-af038",
-    storageBucket: "spinwheel-af038.firebasestorage.app",
-    messagingSenderId: "341332533625",
-    appId: "1:341332533625:web:3a1de937f25a831413cfa8",
-    measurementId: "G-R69WNJN80B"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const dbrl = getDatabase(app);
+// const firebaseConfig = {
+//     apiKey: "",
+//     authDomain: "",
+//     databaseURL: "",
+//     projectId: "",
+//     storageBucket: "",
+//     messagingSenderId: "",
+//     appId: "",
+//     measurementId: ""
+// };
+// const app = initializeApp(firebaseConfig);
+// const db = getFirestore(app);
+// const dbrl = getDatabase(app);
 if (window.innerWidth <= 980) {
     document.body.style.backgroundImage = "url('./phone.png')";
     let i = 0;
@@ -131,20 +131,20 @@ Submit.onclick = async function (event)
             else
             {
                
-                try {
-                        await addDoc(collection(db, "users"), {
-                            valueName: name.value,
-                            valuePhone: phone.value,
-                            valuePlace: place.value,
-                            valueDiscount: num[Math.round(count)],
-                            timestamp: new Date()
-                        });
-                    } catch (error) {
-                        console.error("Error: ", error);
-                    }
+                // try {
+                //         await addDoc(collection(db, "users"), {
+                //             valueName: name.value,
+                //             valuePhone: phone.value,
+                //             valuePlace: place.value,
+                //             valueDiscount: num[Math.round(count)],
+                //             timestamp: new Date()
+                //         });
+                //     } catch (error) {
+                //         console.error("Error: ", error);
+                //     }
                     infoBox.style.display ='none';
                     spinBtn.style.display = 'flex';
-                    window.location.href = "https://www.facebook.com/thinh.nguyen.857817";
+                    // window.location.href = "";
                     localStorage.setItem("reopen",false);
             }
     
