@@ -7,7 +7,7 @@ let Submit = document.querySelector('.Submit');
 let span = document.querySelectorAll('.number');
 let audio = document.getElementById('nhac');
 let winner = document.getElementById('winner');
-const num = ["10k", "50k" , "20k", "Dưỡng", "100k", "Bông 120 miếng", "Tê", "500k"];
+const num = ["10k", "50k" , "20k", "200k", "100k", "5k", "2k", "500k"];
 let headerInfo = document.getElementById('info');
 let infoBox = document.querySelector('.info-box');
 let header = document.querySelector('.head');
@@ -32,6 +32,7 @@ let checkData = null;
 // const app = initializeApp(firebaseConfig);
 // const db = getFirestore(app);
 // const dbrl = getDatabase(app);
+localStorage.clear();
 if (window.innerWidth <= 980) {
     document.body.style.backgroundImage = "url('./phone.png')";
     let i = 0;
@@ -48,7 +49,7 @@ if (window.innerWidth <= 980) {
 }
     if (localStorage.getItem("turn-round") == null)
     {
-        localStorage.setItem("turn-round",1);
+        localStorage.setItem("turn-round",10);
     }
  
     if(localStorage.getItem("reopen")==null)
@@ -63,10 +64,12 @@ if (window.innerWidth <= 980) {
         
     }
 header.textContent = "Bạn có " + localStorage.getItem("turn-round") + " lượt quay may mắn !";
+console.log(localStorage.getItem("turn-round"));
 spinBtn.onclick = async function () {
     
-    if (localStorage.getItem("turn-round") == 1)
+    if (localStorage.getItem("turn-round") > 0)
     {
+        localStorage.setItem("turn-round", localStorage.getItem("turn-round") - 1);
         let spinValue = Math.ceil(Math.random() * 360) + 1800; 
         currentDegree += spinValue;
         count = 8-(spinValue %360 )/45;
@@ -79,21 +82,21 @@ spinBtn.onclick = async function () {
             count = 0;
             currentDegree -= 45;
         }
-        let snapshot = await get(ref(dbrl,"users/temp"));
-        if (snapshot.exists())
-        {
-            checkData = snapshot.val();
-        }
-        if (checkData != 0 && Math.round(count) == 4){
-            checkData -=1;
-            await set(ref(dbrl,"users/temp"), checkData);
-        }
-        if (num[Math.round(count)] == "100k" && checkData ==0)
+        // let snapshot = await get(ref(dbrl,"users/temp"));
+        // if (snapshot.exists())
+        // {
+        //     checkData = snapshot.val();
+        // }
+        // if (checkData != 0 && Math.round(count) == 4){
+        //     checkData -=1;
+            // await set(ref(dbrl,"users/temp"), checkData);
+        // }
+        if (num[Math.round(count)] == "100k" )//&& checkData ==0)
         {
             count = 5;
             currentDegree -= 45;
         }
-        header.textContent = "Bạn có 0 lượt quay may mắn !";
+        header.textContent = "Bạn có " + localStorage.getItem("turn-round") + " lượt quay may mắn !";
         wheel.style.transition = "transform 3s ease-out"; 
         wheel.style.transform = `rotate(${currentDegree}deg)`;
         audio.play();
@@ -101,8 +104,11 @@ spinBtn.onclick = async function () {
         setTimeout(function(){
             infoBox.style.display ='block';
             infoBox.style.animation = 'fadeInOut 1s ease-in-out forwards';
+            name.value = "";
+            place.value = "";
+            phone.value = "";
             spinBtn.style.display = 'none';
-            localStorage.setItem("turn-round", 0);
+            // localStorage.setItem("turn-round", 0);
             localStorage.setItem("lastDis", num[Math.round(count)]);
             audio.pause();
             winner.play();
